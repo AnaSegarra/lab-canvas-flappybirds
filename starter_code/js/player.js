@@ -1,12 +1,12 @@
 class Player {
-	constructor(ctx, width, height, image) {
+	constructor(ctx, width, height, x, y, image) {
 		this.ctx = ctx;
 		this.width = width;
 		this.height = height;
-		this.gravity = 0.1;
-		this.gravitySpeed = 0.5;
-		this.x = 50;
-		this.y = 100;
+		this.gravity = 0.2;
+		this.gravitySpeed = 0.7;
+		this.x = x;
+		this.y = y;
 
 		this.jump = 0;
 
@@ -21,20 +21,28 @@ class Player {
 	}
 
 	move() {
-		this.y += this.gravitySpeed + this.jump;
+		if (this.y + this.gravitySpeed + this.jump < 0) {
+			this.y = 0;
+		} else {
+			this.y += this.gravitySpeed + this.jump;
+		}
 		this.gravitySpeed += this.gravity;
 	}
 
 	setListeners() {
+		let keyHeld = true;
 		document.addEventListener('keydown', e => {
+			if (!keyHeld) return;
 			if (e.keyCode === 32) {
-				this.jump = -20;
+				this.jump = -10;
 				this.gravitySpeed = 0;
+				keyHeld = false;
 			}
 		});
 		document.addEventListener('keyup', e => {
 			if (e.keyCode === 32) {
 				this.jump = 0;
+				keyHeld = true;
 			}
 		});
 	}
